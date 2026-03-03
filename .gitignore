@@ -46,4 +46,7 @@ docs/
 po/*~
 
 # RStudio Connect folder
-rsconnect/
+rsconnect/ 
+
+# Onf data
+ressources/inhouse/*.csv
