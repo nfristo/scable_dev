@@ -10,6 +10,7 @@
 # =========================
 library(readr)
 library(dplyr)
+library(sf)
 
 # =========================
 # 2. CHARGEMENT DES DONNÉES
@@ -181,10 +182,89 @@ mutate(
   TARIF_PRESTA_TERRE_M3 = coalesce(COUT_VARIABLES_TERRE_M3, 0) + coalesce(COUT_FIXES_TERRE_M3, 0)
 )
 
+# Pour pouvoir calculer des données spatiales :
+# On ajoute les polygones de chaque chantier dans le df_terre, en les regroupant par chantier :
+contour_sf_terre <- contour_terre %>% 
+  st_as_sf(wkt = "CONTOUR", crs = 4326) %>%
+  select(ID_FB, CONTOUR)
+df_terre <- df_terre %>%
+  left_join(contour_sf_terre, by = "ID_FB")
+
+#Les coordonnées des polygones sont extraites pour pouvoir être utilisées en analyse statistiques.
+df_terre <- df_terre %>%
+  st_as_sf() %>%
+  st_transform(2154) #transformation des données WGS 84 en Lambert 93 pour les calculs suivants
+
+# =========================
+# 11. Calcul de la pente et l'altitude moyenne des parcelles débardées en utlisant la BD ALTI 25m de l'IGN
+# =========================
+
+library(exactextractr)
+library(terra)
+
+dir_base <- "~/Documents/S10_BETA/scable_dev/resources/public/BDALTI/"
+files <- list.files(
+  dir_base,
+  pattern = "\\.[a][s][c]$",  # permet de sélectionner tous les fichiers .asc présent dans le fichier donné en dir_base
+  full.names = TRUE,
+  recursive = TRUE )
+
+print(length(files)) # On vérifie que les fichiers .asc ont été sélectionnés et que le files n'est pas vide
+
+mnt <- vrt(files) #chargement de la BDALTI dans le Formal class SpatRaster mnt
+# Attention cette étape peut prendre plusieurs minutes, il ne faut pas la stopper
+
+crs(mnt) <- "EPSG:2154" # définir le CRS des rasters pour qu'il soit identique à celui des polygones (IGN BD ALTI = Lambert 93 2154)
+v_terre <- vect(df_terre) # On converti en vecteur terra les données spatiales des polygones 
+mnt_terre <- crop(mnt, v_terre) # On réduit le Raster uniquement aux polygones pour l'étude de pente et d'altitude
+slope_terre <- terrain(mnt_terre, v = "slope", unit = "degrees") # on créé un Raster contenant uniquement la pente de chaque polygone
+df_terre$altitude_moy <- exact_extract(mnt_terre, df_terre, 'mean') #Ajout de l'altitude moyenne pour chaque polygone dans le tableau
+df_terre$pente_moy <- exact_extract(slope_terre, df_terre, 'mean') #Ajout de la pente moyenne pour chaque polygone dans le tableau
+
+df_terre <- st_make_valid(df_terre)
+  any(is.na(st_geometry(df_terre)))
+################### On verra si le calcul d'un centroide sert vrmt ou si je prends l'altitude moyenne du polygon
+# calcul de l'latitude du centroïde
+df$centroide <- st_centroid(df$CONTOUR) # Création du centroide de chaque polygone
+centroids_vect <- vect(st_as_sf(df$centroide)) 
+df$altitude_centroide <- extract(mnt, centroids_vect)[,2]
+#mediane_chantier <- df %>% # permet de créer une altitude médiane des centroides des différents polygones d'un chantier
+st_drop_geometry() %>%
+  group_by(ID_CHANTIER) %>%
+  summarise(
+    altitude_med = median(altitude_centroide, na.rm = TRUE)
+  )
+
+# On classe les chantiers en classe plaine / montagne selon leur altitude.
+df$type_chantier <- ifelse(df$altitude_moy > 600, "Montagne", "Plaine")
+
+summary(df$altitude_moy)
+summary(df$pente_moy)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # =========================
 # 12. EXPORT
 # =========================
 write.csv(df_terre, "~/Documents/S10_BETA/scable_dev/results/global/terrestre_dataset.csv", row.names = FALSE)
+
+
+
+
 
 
 
