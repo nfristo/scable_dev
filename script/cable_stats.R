@@ -153,7 +153,7 @@ essence <- contour %>%
 # =========================
 
 df <- chantiers %>%
-  select(ID_CHANTIER, DEP, FRT, VOL_PREVU, NB_LIGNES,
+  select(ID_CHANTIER, DEP, FRT, DEBUT_CHANTIER,FIN_CHANTIER, VOL_PREVU, NB_LIGNES,
          LONGUEUR_MIN, LONGUEUR_MAX) %>%
   left_join(vol_reel, by = "ID_CHANTIER") %>%
   left_join(cout_deb, by = "ID_CHANTIER") %>%
@@ -163,6 +163,7 @@ df <- chantiers %>%
   left_join(gr_stats, by = "ID_CHANTIER") %>%
   left_join(peupl_stats, by = "ID_CHANTIER") %>%
   left_join(essence, by = "ID_CHANTIER")
+
 
 #On retire les colonnes volume réel qui sont ajoutés plusieurs fois en doublon lors des jointures
 df <- df %>%
@@ -214,29 +215,28 @@ mnt <- vrt(files) #chargement de la BDALTI dans le Formal class SpatRaster mnt
 
 crs(mnt) <- "EPSG:2154" # définir le CRS des rasters pour qu'il soit identique à celui des polygones (IGN BD ALTI = Lambert 93 2154)
 v <- vect(df) # On converti en vecteur terra les données spatiales des polygones 
-mnt <- crop(mnt, v) # On réduit le Raster uniquement aux polygones pour l'étude de pente et d'altitude
-slope <- terrain(mnt, v = "slope", unit = "degrees") # on créé un Raster contenant uniquement la pente de chaque polygone
-df$altitude_moy <- exact_extract(mnt, df, 'mean') #Ajout de l'altitude moyenne pour chaque polygone dans le tableau
-df$pente_moy <- exact_extract(slope, df, 'mean') #Ajout de la pente moyenne pour chaque polygone dans le tableau
+mnt_cable <- crop(mnt, v) # On réduit le Raster uniquement aux polygones pour l'étude de pente et d'altitude
+slope <- terrain(mnt_cable, v = "slope", unit = "degrees") # on créé un Raster contenant uniquement la pente de chaque polygone
+df$ALTITUDE_MOY <- exact_extract(mnt_cable, df, 'mean') #Ajout de l'altitude moyenne pour chaque polygone dans le tableau
+df$PENTE_MOY <- exact_extract(slope, df, 'mean') #Ajout de la pente moyenne pour chaque polygone dans le tableau
 
 ################### On verra si le calcul d'un centroide sert vrmt ou si je prends l'altitude moyenne du polygon
 # calcul de l'latitude du centroïde
-df$centroide <- st_centroid(df$CONTOUR) # Création du centroide de chaque polygone
-centroids_vect <- vect(st_as_sf(df$centroide)) 
-df$altitude_centroide <- extract(mnt, centroids_vect)[,2]
+df$CENTROIDE <- st_centroid(df$CONTOUR) # Création du centroide de chaque polygone
+centroids_vect <- vect(st_as_sf(df$CENTROIDE)) 
+df$ALTITUDE_CENTROIDE <- extract(mnt, centroids_vect)[,2]
 #mediane_chantier <- df %>% # permet de créer une altitude médiane des centroides des différents polygones d'un chantier
   st_drop_geometry() %>%
   group_by(ID_CHANTIER) %>%
   summarise(
-    altitude_med = median(altitude_centroide, na.rm = TRUE)
+    altitude_med = median(ALTITUDE_CENTROIDE, na.rm = TRUE)
   )
 
 # On classe les chantiers en classe plaine / montagne selon leur altitude.
-df$type_chantier <- ifelse(df$altitude_moy > 600, "Montagne", "Plaine")
+df$TYPE_CHANTIER <- ifelse(df$ALTITUDE_MOY > 600, "Montagne", "Plaine")
 
-summary(df$altitude_moy)
-summary(df$pente_moy)
-
+summary(df$ALTITUDE_MOY)
+summary(df$PENTE_MOY)
 
 # =========================
 # TEST ENGORGEMENT #problème = résolution km de la carte et_2014
@@ -247,25 +247,25 @@ crs(et) <- "EPSG:2154"
 v <- vect(df) 
 et <- crop(et, v) # On adapte à l'emprise des polygones des chantiers
 
-df$prop_engorge <- exact_extract(et, df, function(values, coverage_fraction) { #Approche surfacique, superposition des données des pixels
+df$PROP_ENGORGE <- exact_extract(et, df, function(values, coverage_fraction) { #Approche surfacique, superposition des données des pixels
   mean(values > 0.025, na.rm = TRUE) # Définition du seuil d'engorgement de la carte
 })
 
-df$zone_humide <- ifelse(df$prop_engorge >= 0.70, "Engorgé", "Non engorgé") # Parcelle engorgée si au moins 20% de sa surface est sur une surface engorgée de la carte ET
+df$ENGORGEMENT <- ifelse(df$PROP_ENGORGE >= 0.70, "Engorgé", "Non engorgé") # Parcelle engorgée si au moins 20% de sa surface est sur une surface engorgée de la carte ET
 
 df_plaine <- df %>% #On garde uniquement les chantiers de plaine et ceux avec une pente inférieure à 20% 
-  filter(type_chantier == "Plaine", pente_moy < 11.3) #11.3° équivaut à environ pente de 20%
+  filter(TYPE_CHANTIER == "Plaine", PENTE_MOY < 11.3) #11.3° équivaut à environ pente de 20%
 
 #Résumé de l'engorgement par chantier (plaine uniquement) 
 resume_plaine <- df_plaine %>%
   st_drop_geometry() %>%
   group_by(ID_CHANTIER) %>%
   summarise(
-    prop_engorge = mean(prop_engorge, na.rm = TRUE),
-    classe_engorgement = ifelse(prop_engorge >= 0.70, "Engorgé", "OK")
+    PROP_ENGORGE = mean(PROP_ENGORGE, na.rm = TRUE),
+    classe_engorgement = ifelse(PROP_ENGORGE >= 0.70, "Engorgé", "OK")
   )
 
-table(df_plaine$zone_humide)
+table(df_plaine$ENGORGEMENT)
 
 
 # =========================
@@ -279,7 +279,7 @@ jours_chantier <- df %>%
     FIN_CHANTIER   = ifelse(all(is.na(FIN_CHANTIER)), NA, max(FIN_CHANTIER, na.rm = TRUE)),
     NB_LIGNES_TOTAL = sum(NB_LIGNES, na.rm = TRUE), # Chargement du nombre de lignes totlaes par chantier
     LONGUEUR_MAX = max(LONGUEUR_MAX, na.rm = TRUE), # Chargement de la longueur maximum des lignes par chantier
-    type_chantier = first(type_chantier) # chargement du type de chantier Plaine ou Montagne
+    type_chantier = first(TYPE_CHANTIER) # chargement du type de chantier Plaine ou Montagne
   ) %>%
   mutate(
     JOURS_TOTAL = as.numeric(FIN_CHANTIER - DEBUT_CHANTIER + 2),
@@ -370,7 +370,7 @@ df_phases_actives <- commandes %>%
 
 df_export <- df %>%
   sf::st_drop_geometry() %>% # permet d'enlever les données spatiales du csv et l'exporter proprement
-  select(-centroide) # les coordonées des centroides sont également enlevées car elles faussent le tableau 
+  select(-CENTROIDE) # les coordonées des centroides sont également enlevées car elles faussent le tableau 
 
 write.csv(df_export, "~/Documents/S10_BETA/scable_dev/results/cable_dataset.csv", row.names = FALSE)
 
