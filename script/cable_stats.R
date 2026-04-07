@@ -162,7 +162,7 @@ df <- chantiers %>%
   left_join(cout_transfert, by = "ID_CHANTIER") %>%
   left_join(gr_stats, by = "ID_CHANTIER") %>%
   left_join(peupl_stats, by = "ID_CHANTIER") %>%
-  left_join(essence, by = "ID_CHANTIER") %>%
+  left_join(essence, by = "ID_CHANTIER")
 
 #On retire les colonnes volume réel qui sont ajoutés plusieurs fois en doublon lors des jointures
 df <- df %>%
@@ -224,7 +224,7 @@ df$pente_moy <- exact_extract(slope, df, 'mean') #Ajout de la pente moyenne pour
 df$centroide <- st_centroid(df$CONTOUR) # Création du centroide de chaque polygone
 centroids_vect <- vect(st_as_sf(df$centroide)) 
 df$altitude_centroide <- extract(mnt, centroids_vect)[,2]
-mediane_chantier <- df %>% # permet de créer une altitude médiane des centroides des différents polygones d'un chantier
+#mediane_chantier <- df %>% # permet de créer une altitude médiane des centroides des différents polygones d'un chantier
   st_drop_geometry() %>%
   group_by(ID_CHANTIER) %>%
   summarise(
@@ -232,10 +232,40 @@ mediane_chantier <- df %>% # permet de créer une altitude médiane des centroid
   )
 
 # On classe les chantiers en classe plaine / montagne selon leur altitude.
-df$type_chantier <- ifelse(df$altitude_centroide > 600, "Montagne", "Plaine")
+df$type_chantier <- ifelse(df$altitude_moy > 600, "Montagne", "Plaine")
 
 summary(df$altitude_moy)
 summary(df$pente_moy)
+
+
+# =========================
+# TEST ENGORGEMENT #problème = résolution km de la carte et_2014
+# =========================
+
+et <- rast("~/Documents/S10_BETA/scable_dev/resources/public/et_2014.tif") #Chargement carte engorgement temporaire france
+crs(et) <- "EPSG:2154"
+v <- vect(df) 
+et <- crop(et, v) # On adapte à l'emprise des polygones des chantiers
+
+df$prop_engorge <- exact_extract(et, df, function(values, coverage_fraction) { #Approche surfacique, superposition des données des pixels
+  mean(values > 0.025, na.rm = TRUE) # Définition du seuil d'engorgement de la carte
+})
+
+df$zone_humide <- ifelse(df$prop_engorge >= 0.70, "Engorgé", "Non engorgé") # Parcelle engorgée si au moins 20% de sa surface est sur une surface engorgée de la carte ET
+
+df_plaine <- df %>% #On garde uniquement les chantiers de plaine et ceux avec une pente inférieure à 20% 
+  filter(type_chantier == "Plaine", pente_moy < 11.3) #11.3° équivaut à environ pente de 20%
+
+#Résumé de l'engorgement par chantier (plaine uniquement) 
+resume_plaine <- df_plaine %>%
+  st_drop_geometry() %>%
+  group_by(ID_CHANTIER) %>%
+  summarise(
+    prop_engorge = mean(prop_engorge, na.rm = TRUE),
+    classe_engorgement = ifelse(prop_engorge >= 0.70, "Engorgé", "OK")
+  )
+
+table(df_plaine$zone_humide)
 
 
 # =========================
@@ -332,8 +362,6 @@ df_phases_actives <- commandes %>%
     cluster_id = cumsum(new_cluster)
   ) %>%
   ungroup()
-
-
 
 
 # =========================
