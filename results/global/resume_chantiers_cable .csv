@@ -1,0 +1,26 @@
+;Variable;N;Mean;Mediane;SD;Q1;Q3
+1;Total felling volume (m3/ha);40;6858.8;953;24462.9;767.5;1636.5
+15;Felling part of Extraction rate (EUR/m3);39;12.2;13;3;10.5;14
+2;Total yarding volume (m3/ha);49;1326.2;995.8;947.2;684;2008
+16;Yarding part of extraction rate (EUR/m3);44;17.7;18;4.6;14;21.1
+17;Total felling/yarding (ABADEB) volume (m3/ha);11;935.3;960.1;593.7;533.1;1246.3
+18;Felling/yarding (ABADEB) extraction rate (EUR/m3);10;28.5;24.9;8.2;24.8;28.8
+21;Variable part of the extraction rate (EUR/m3);47;31.1;29.4;5.7;27.4;34
+19;Line installation/dismantling costs (EUR/m3);54;9.1;9.3;4;6;11.9
+20;Transfer costs (EUR/m3);45;3.6;3.2;2.8;1.3;5.4
+22;Fixed part of the extraction rate (EUR/m3);45;13.8;14;5.7;9.2;18
+23;Extraction rate (EUR/m3);40;43.4;41;7.9;37.3;47
+3;Number of harvested logs;68;1377;915;1469.7;329.5;1896.5
+4;Mean diameter per tree harvested (cm);68;39.3;36.8;13;29.3;47.7
+5;Mean volume per tree harvested (m3);68;1.5;1.2;1;0.6;2
+6;Total harvested basal area (m2/operation);68;137.7;104.5;113.9;51;196.2
+7;Harvested basal area per hectare (m2/ha);66;14.5;8.5;13;4.7;21.7
+8;Mean volume per hectare (m3/ha);68;165.3;104.4;140.8;63.4;229.2
+9;Area of operation (hectare);68;399.4;10.4;3164.6;5.3;22
+10;Mean altitude (m);68;594.3;535;437.7;246.1;894.6
+11;Mean slope (°);68;8.8;4.8;9.4;1.8;16.3
+12;Altitude of the centroid (m);68;595.4;550.6;441.6;240.4;895.1
+13;Number of lines per operation;68;5.4;4;4;2.8;7
+14;Mean length of lines;68;330.3;321.2;116.7;235;400
+24;Distance to Eastern frontier (km);68;160.9;138.6;145.8;37.8;224.3
+26;Number of operation days;60;96.8;75;89.5;26.2;156.5

@@ -1,0 +1,88 @@
+SER;CODE_SER;DIAM1;DIAM2;DIAM3;DIAM4;DIAM5;DIAM6;DIAM7;DIAM8;DIAM9
+Ouest-Bretagne et Nord-Cotentin;A11;15;20;25;25;30;35;45;50;65
+Pays de Saint-Malo;A12;15;20;25;30;35;40;45;55;65
+Bocage normand et Pays de Fougères;A13;15;20;25;30;40;45;50;55;70
+Bretagne méridionale;A21;15;20;25;30;35;40;45;55;70
+Bocage armoricain;A22;15;20;25;25;30;40;45;55;65
+Bocage vendéen;A30;10;15;20;20;25;30;35;45;60
+Côtes et plateaux de la Manche;B10;15;20;25;30;40;45;55;60;75
+Flandres;B21;10;15;25;30;35;45;55;65;90
+Plaine picarde;B22;10;20;20;30;35;40;45;55;65
+Mosan, Thiérache et Hainaut;B23;15;25;30;35;40;45;55;65;75
+Campagne de Caen et Pays d'Auge;B31;15;20;25;30;35;40;45;55;65
+Plateaux de l'Eure;B32;15;20;25;30;35;40;45;55;65
+Perche;B33;15;20;25;30;35;40;45;55;65
+Bassin parisien tertiaire;B41;15;20;25;30;35;40;50;55;70
+Brie et Tardenois;B42;15;20;25;30;35;40;50;55;70
+Champagne crayeuse;B43;10;15;20;20;25;30;35;45;55
+Beauce;B44;10;15;20;20;25;30;35;40;50
+Champagne humide;B51;10;20;25;30;35;45;50;60;70
+Pays d'Othe et Gâtinais oriental;B52;10;15;20;25;30;40;45;55;65
+Pays-Fort, Nivernais et plaines prémorvandelles;B53;10;15;25;30;35;40;50;55;65
+Baugeois-Maine;B61;15;20;25;30;35;40;45;50;60
+Champeigne-Gâtine tourangelle;B62;15;20;25;30;35;40;45;50;60
+Sologne-Orléanais;B70;15;15;20;25;30;35;40;50;65
+Loudunais et Saumurois;B81;10;15;20;25;30;35;45;50;60
+Brenne et Brandes;B82;10;15;20;25;30;30;40;45;55
+Boischaut et Champagne berrichonne;B91;10;15;20;25;35;40;50;55;65
+Bourbonnais et Charolais;B92;15;20;25;30;35;40;45;55;60
+Ardenne primaire;C11;15;20;25;25;30;35;40;50;60
+Argonne;C12;15;20;25;30;35;40;50;55;65
+Plateaux calcaires du Nord-Est;C20;10;15;20;25;30;35;40;50;60
+Plaines et dépressions argileuses du Nord-Est;C30;15;20;25;30;35;45;50;60;70
+Plaine d'Alsace;C41;15;20;20;25;30;35;40;50;65
+Sundgau alsacien et belfortain;C42;15;25;30;35;40;50;55;60;70
+Saône, Bresse et Dombes;C51;10;15;25;30;35;45;50;60;75
+Plaines et piémonts alpins;C52;10;15;20;25;25;30;35;45;55
+Massif vosgien central;D11;15;20;25;30;35;40;45;50;60
+Collines périvosgiennes et Warndt;D12;15;20;25;30;35;40;50;55;65
+Premier plateau du Jura;E10;10;15;20;25;30;30;35;45;55
+Deuxième plateau et Haut-Jura;E20;15;20;25;30;35;40;45;50;60
+Terres rouges;F11;10;15;15;20;20;25;30;35;50
+Groies;F12;10;15;15;20;20;25;30;35;50
+Marais littoraux;F13;10;15;20;20;25;35;40;50;50
+Champagne charentaise;F14;10;15;20;20;25;30;35;40;55
+Périgord;F15;10;15;20;20;25;30;35;45;55
+Landes de Gascogne;F21;15;15;20;20;25;30;35;40;45
+Dunes atlantiques;F22;15;20;25;30;35;35;40;45;55
+Bazadais, Double et Landais;F23;15;15;20;25;25;30;40;45;55
+Coteaux de la Garonne;F30;10;15;20;25;30;35;40;45;60
+Causses du Sud-Ouest;F40;10;15;15;20;20;20;25;30;40
+Adour atlantique;F51;15;25;30;35;40;50;55;65;80
+Collines de l'Adour;F52;15;20;25;30;35;40;50;55;70
+Châtaigneraie du Centre et de l'Ouest;G11;10;15;20;25;30;35;40;50;60
+Marches du Massif central;G12;15;20;25;25;30;35;45;55;70
+Plateaux limousins;G13;15;20;25;25;30;35;40;50;60
+Plateaux granitiques ouest du Massif central;G21;15;20;25;30;30;35;40;50;55
+Plateaux granitiques du centre du Massif central;G22;15;20;25;30;30;35;40;45;55
+Morvan et Autunois;G23;15;20;25;30;35;40;45;50;60
+Massif central volcanique;G30;15;20;25;30;35;40;45;50;60
+Bordure Nord-Est du Massif central;G41;15;20;25;30;30;35;40;45;55
+Monts du Vivarais et du Pilat;G42;15;20;25;25;30;35;40;45;55
+Ségala et Châtaigneraie auvergnate;G50;15;20;20;25;30;35;40;45;60
+Grands Causses;G60;10;15;15;20;20;25;30;30;40
+Cévennes;G70;15;15;20;25;30;30;35;45;55
+Haut-Languedoc et Lévézou;G80;10;15;20;25;30;30;35;45;50
+Plaines alluviales et piémonts du Massif central;G90;10;15;20;25;30;35;40;45;55
+Préalpes du Nord;H10;15;20;25;30;35;40;45;55;65
+Alpes externes du Nord;H21;15;20;30;35;40;45;50;55;70
+Alpes internes du Nord;H22;15;20;25;30;35;40;45;50;60
+Alpes externes du Sud;H30;10;15;15;20;25;25;30;35;45
+Alpes intermédiaires du Sud;H41;15;20;20;25;30;35;40;45;55
+Alpes internes du Sud;H42;15;20;25;25;30;35;40;50;55
+Piémont pyrénéen;I11;15;20;20;25;30;35;45;55;65
+Pyrénées cathares;I12;15;20;25;25;30;35;40;50;60
+Corbières;I13;10;15;15;20;20;25;30;40;50
+Haute-chaîne pyrénéenne;I21;15;20;25;30;35;40;45;55;70
+Pyrénées catalanes;I22;10;15;20;20;25;30;30;35;50
+Garrigues;J10;10;10;10;15;15;15;20;25;35
+Roussillon;J21;10;10;15;15;15;20;25;25;35
+Plaines et collines rhodaniennes et languedociennes;J22;10;10;15;15;20;20;25;30;45
+Provence calcaire;J23;10;10;15;15;20;25;35;40;50
+Secteurs niçois et préligure;J24;10;15;15;20;25;30;35;40;55
+Maures et Esterel;J30;10;15;20;20;25;30;35;40;50
+Préalpes du Sud;J40;10;10;15;15;20;25;30;35;45
+Corse occidentale;K11;10;10;15;15;20;20;25;30;45
+Montagne corse;K12;10;15;25;35;40;50;60;70;85
+Corse orientale;K13;10;10;15;20;25;30;40;55;85
+National - toutes SER confondues;NAT;10;15;20;25;30;35;40;50;60

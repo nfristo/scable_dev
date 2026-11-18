@@ -1,0 +1,17 @@
+;Variable;N;Mean;Mediane;Standard deviation;Q1;Q3
+1;Total felling volume (m3/ha);781;725.7;545.5;794.9;235;936.1
+3;Felling part of Extraction rate (EUR/m3);781;12.1;11.9;2.7;10.5;13.7
+4;Total yarding volume (m3/ha);781;736.5;545.5;779;235;930.9
+6;Yarding part of extraction rate (EUR/m3);781;7.9;7.6;2.4;6.5;8.5
+7;Additional costs (EUR/m3);781;0.4;0;1.8;0;0
+8;Extraction rate (EUR/m3);781;20.4;19.8;4.9;17.3;22.9
+9;Number of harvested logs;781;729.2;303;1118.2;121;852
+10;Mean diameter per tree harvested (cm);780;42.6;42.9;16;27.9;55.6
+11;Mean volume per tree harvested (m3);780;2;1.5;1.6;0.6;2.9
+12;Total harvested basal area (m2/operation);781;61.3;46;63.1;26.5;74.1
+13;Harvested basal area per hectare (m2/ha);747;5;3.5;6;2.7;4.8
+14;Mean volume per hectare (m3/ha);781;65.9;46;85.5;30.9;69.2
+15;Area of operation (hectare);781;18.6;13.6;34.1;7.5;20.9
+16;Mean altitude (m);781;212.3;157.1;219.6;132.8;189.7
+17;Mean slope (°);781;3.4;1.8;4.2;0.9;4.3
+18;Altitude of the centroid (m);781;213.5;157.4;222.7;133.2;191.1
